@@ -1,0 +1,32 @@
+//引用groovy插件，编译插件工程
+apply plugin: 'groovy'
+//引用maven插件，用于发布
+apply plugin: 'maven'
+
+//声明仓库的地址
+repositories {
+    mavenCentral()
+}
+
+//声明依赖的包
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+//配置maven插件中的uploadArchives任务
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //设置发布路径
+            //当前路径未工程根目录下的repo文件夹
+            repository(url: uri('../repo')) {
+                //设置GroupId，通常为包名
+                pom.groupId = 'com.marco.router'
+                //设置artifactId，当前插件的名称
+                pom.artifactId = 'router-gradle-plugin'
+                //设置插件版本
+                pom.version = '1.0.0'
+            }
+        }
+    }
+}
