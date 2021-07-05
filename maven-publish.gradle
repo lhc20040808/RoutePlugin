@@ -1,0 +1,30 @@
+plugins {
+    id 'maven'//使用Maven插件中的发布功能
+}
+//读取工程配置
+Properties gradleProperties = new Properties()
+gradleProperties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+def POM_URL = gradleProperties.get("POM_URL")
+def GROUP_ID = gradleProperties.get("GROUP_ID")
+def VERSION_NAME = gradleProperties.get("VERSION_NAME")
+
+Properties projectProperties = new Properties()
+projectProperties.load(project.file().newDataInputStream())
+def POM_ARTIFACT_ID = gradleProperties.get("POM_ARTIFACT_ID")
+
+println("maven-public POM_URL:" + POM_URL)
+println("maven-public GROUP_ID:" + GROUP_ID)
+println("maven-public VERSION_NAME:" + VERSION_NAME)
+println("maven-public POM_ARTIFACT_ID:" + POM_ARTIFACT_ID)
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(POM_URL)) {
+                pom.groupId = GROUP_ID
+                pom.artifactId = POM_ARTIFACT_ID
+                pom.version = VERSION_NAME
+            }
+        }
+    }
+}
