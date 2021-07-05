@@ -42,6 +42,10 @@ public class DestinationProcessor extends AbstractProcessor {
      */
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+        //避免多次调用
+        if (roundEnvironment.processingOver()) {
+            return false;
+        }
         System.out.println(TAG + "process start");
         //获取所有标记了@Destination注解的类的信息
         Set<Element> allDestinationElements = (Set<Element>) roundEnvironment.getElementsAnnotatedWith(Destination.class);
