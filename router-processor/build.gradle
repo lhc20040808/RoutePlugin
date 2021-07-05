@@ -1,7 +1,11 @@
-apply plugin : 'java'
+plugins{
+    id 'java'
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
 
 dependencies {
     implementation project(':router-annotation')
+    kapt 'com.google.auto.service:auto-service:1.0-rc6'
     implementation 'com.google.auto.service:auto-service:1.0-rc6'
-    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
 }
