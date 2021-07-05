@@ -94,6 +94,20 @@ apply from:  project.rootProject.file("other.gradle")
 
 
 
+APT工作原理
+
+//TODO 
+
+
+
+#### APT开发流程
+
+- 定义注解
+- 编写注解处理器
+- 调用注解与注解处理器
+
+
+
 ## 页面路由框架开发
 
 #### 页面路由功能梳理
