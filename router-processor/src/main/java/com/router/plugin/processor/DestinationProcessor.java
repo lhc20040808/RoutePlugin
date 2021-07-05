@@ -1,15 +1,18 @@
 package com.router.plugin.processor;
 
+import com.google.auto.service.AutoService;
 import com.router.plugin.annotation.Destination;
 
 import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
+@AutoService(Processor.class)
 public class DestinationProcessor extends AbstractProcessor {
 
     private static final String TAG = "[DestinationProcessor]";
