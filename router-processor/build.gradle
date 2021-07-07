@@ -9,4 +9,5 @@ dependencies {
     implementation project(':router-annotation')
     kapt 'com.google.auto.service:auto-service:1.0-rc6'
     implementation 'com.google.auto.service:auto-service:1.0-rc6'
+    implementation 'com.google.code.gson:gson:2.8.1'
 }
