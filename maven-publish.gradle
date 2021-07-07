@@ -1,6 +1,4 @@
-plugins {
-    id 'maven'//使用Maven插件中的发布功能
-}
+apply plugin : 'maven'
 //读取工程配置
 Properties gradleProperties = new Properties()
 gradleProperties.load(project.rootProject.file('gradle.properties').newDataInputStream())
@@ -9,8 +7,8 @@ def GROUP_ID = gradleProperties.get("GROUP_ID")
 def VERSION_NAME = gradleProperties.get("VERSION_NAME")
 
 Properties projectProperties = new Properties()
-projectProperties.load(project.file().newDataInputStream())
-def POM_ARTIFACT_ID = gradleProperties.get("POM_ARTIFACT_ID")
+projectProperties.load(project.file('gradle.properties').newDataInputStream())
+def POM_ARTIFACT_ID = projectProperties.get("POM_ARTIFACT_ID")
 
 println("maven-public POM_URL:" + POM_URL)
 println("maven-public GROUP_ID:" + GROUP_ID)
@@ -24,6 +22,15 @@ uploadArchives {
                 pom.groupId = GROUP_ID
                 pom.artifactId = POM_ARTIFACT_ID
                 pom.version = VERSION_NAME
+            }
+
+            pom.whenConfigured { pom ->
+                pom.dependencies.forEach { dep ->
+                    if (dep.getVersion() == "unspecified") {
+                        dep.setGroupId(GROUP_ID)
+                        dep.setVersion(VERSION_NAME)
+                    }
+                }
             }
         }
     }
