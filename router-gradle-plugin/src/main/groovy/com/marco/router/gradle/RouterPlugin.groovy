@@ -12,6 +12,16 @@ class RouterPlugin implements Plugin<Project> {
      */
     @Override
     void apply(Project project) {
+        //自动帮助用户传递路径参数到注解处理器中
+        if (project.extensions.findByName("kapt") != null) {
+            project.extensions.findByName("kapt").arguments {
+                arg("root_project_dir", project.rootProject.projectDir.absolutePath)
+            }
+        }
+
+        //实现旧的构建产物的自动清理
+        //在javac任务后汇总生成文档
+
         println("[RouterPlugin]apply from ${project.name}")
         //step1 定义Extension
         //step2 注册Extension
