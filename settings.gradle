@@ -1,4 +1,8 @@
 rootProject.name = "RoutePlugin"
-include ':app',":router-gradle-plugin"
+include ':app', ":router-gradle-plugin"
 include ':router-annotation'
 include ':router-processor'
+
+//gradle.taskGraph.beforeTask { task ->
+//    println("[all-task]" + task.name)
+//}
