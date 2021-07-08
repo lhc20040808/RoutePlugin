@@ -1,9 +1,12 @@
 package com.marco.router.gradle
 
+import com.android.build.api.transform.Format
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformException
 import com.android.build.api.transform.TransformInvocation
+import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.utils.FileUtils
 
 class RouterMappingTransform extends Transform {
 
@@ -13,7 +16,7 @@ class RouterMappingTransform extends Transform {
      */
     @Override
     String getName() {
-        return null
+        return "RouterMappingTransform"
     }
 
     /**
@@ -22,7 +25,7 @@ class RouterMappingTransform extends Transform {
      */
     @Override
     Set<QualifiedContent.ContentType> getInputTypes() {
-        return null
+        return TransformManager.CONTENT_CLASS
     }
 
     /**
@@ -31,7 +34,7 @@ class RouterMappingTransform extends Transform {
      */
     @Override
     Set<? super QualifiedContent.Scope> getScopes() {
-        return null
+        return TransformManager.SCOPE_FULL_PROJECT
     }
 
     /**
@@ -51,6 +54,34 @@ class RouterMappingTransform extends Transform {
      */
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        super.transform(transformInvocation)
+        //遍历所有的Input,将Input拷贝到目标目录(TransForm必做的事情)
+        RouterMappingCollector collector = new RouterMappingCollector()
+
+        transformInvocation.inputs.each {
+            //把文件夹类型的输入拷贝到目标目录
+            it.directoryInputs.each {
+                directory ->
+                    def destDir = transformInvocation.outputProvider.getContentLocation(
+                            directory.name,
+                            directory.contentTypes,
+                            directory.scopes,
+                            Format.DIRECTORY)
+                    collector.collect(directory.file)
+                    FileUtils.copyDirectory(directory.file, destDir)
+            }
+            //把Jar类型的输入拷贝到目标目录
+            it.jarInputs.each { jarInput ->
+                def dest = transformInvocation.outputProvider.getContentLocation(
+                        jarInput.name,
+                        jarInput.contentTypes,
+                        jarInput.scopes,
+                        Format.JAR)
+                collector.collectFromJarFile(jarInput.file)
+                FileUtils.copyFile(jarInput.file, dest)
+            }
+
+        }
+        //对Input进行二次处理
+        println("[${getName()}] all mapping class name =" + collector.getMappingClassNames())
     }
 }

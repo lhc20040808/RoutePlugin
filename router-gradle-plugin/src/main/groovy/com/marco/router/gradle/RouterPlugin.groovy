@@ -1,5 +1,7 @@
 package com.marco.router.gradle
 
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.AppPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import groovy.json.JsonSlurper
@@ -13,6 +15,14 @@ class RouterPlugin implements Plugin<Project> {
      */
     @Override
     void apply(Project project) {
+        //判断工程是否有App插件，如果有则说明该工程是一个com.android.application的工程
+        if (project.plugins.hasPlugin(AppPlugin)) {
+            AppExtension appExtension = project.extensions.getByType(AppExtension)
+            RouterMappingTransform mappingTransform = new RouterMappingTransform()
+            //注册TransForm
+            appExtension.registerTransform(mappingTransform)
+        }
+
         //自动帮助用户传递路径参数到注解处理器中
         if (project.extensions.findByName("kapt") != null) {
             project.extensions.findByName("kapt").arguments {
@@ -27,9 +37,10 @@ class RouterPlugin implements Plugin<Project> {
                 routerMapping.deleteDir()
             }
         }
-        //在javac任务后汇总生成文档
 
-        println("[RouterPlugin]apply from ${project.name}")
+        if (!project.plugins.hasPlugin(AppPlugin)) {
+            return
+        }
         //注册Extension
         project.getExtensions().create("router", RouterExtension)
         project.afterEvaluate {
@@ -38,6 +49,7 @@ class RouterPlugin implements Plugin<Project> {
             RouterExtension extension = project["router"]
             println("[RouterPlugin]用户设置的wiki路径:${extension.wikiDir}")
             project.tasks.findAll { task ->
+                //在javac任务后汇总生成文档
                 task.name.startsWith('compile') && task.name.endsWith('JavaWithJavac')
             }.each { task ->
                 println("[RouterPlugin]findTask:$task.name")

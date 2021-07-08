@@ -6,3 +6,4 @@ include ':router-processor'
 //gradle.taskGraph.beforeTask { task ->
 //    println("[all-task]" + task.name)
 //}
+include ':biz-reading'
