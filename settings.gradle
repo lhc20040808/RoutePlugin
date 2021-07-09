@@ -7,3 +7,4 @@ include ':router-processor'
 //    println("[all-task]" + task.name)
 //}
 include ':biz-reading'
+include ':router-runtime'
