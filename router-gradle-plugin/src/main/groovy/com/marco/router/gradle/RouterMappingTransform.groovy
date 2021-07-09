@@ -8,6 +8,9 @@ import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
 
+import java.util.jar.JarOutputStream
+import java.util.zip.ZipEntry
+
 class RouterMappingTransform extends Transform {
 
     /**
@@ -83,5 +86,28 @@ class RouterMappingTransform extends Transform {
         }
         //对Input进行二次处理
         println("[${getName()}] all mapping class name =" + collector.getMappingClassNames())
+
+        File mappingJarFile = transformInvocation.outputProvider.getContentLocation("router_mapping",
+                getOutputTypes(),
+                getScopes(),
+                Format.JAR)
+        if (!mappingJarFile.getParentFile().exists()) {
+            mappingJarFile.getParentFile().mkdirs()
+        }
+
+        if (mappingJarFile.exists()) {
+            mappingJarFile.delete()
+        }
+
+        //将生成的字节码写入本地文件
+        println("[${getName()}] mappingJarFile = ${mappingJarFile}")
+        FileOutputStream fos = new FileOutputStream(mappingJarFile)
+        JarOutputStream jarOutputStream = new JarOutputStream(fos)
+        ZipEntry zipEntry = new ZipEntry(RouterMappingByteCodeBuilder.CLASS_NAME + ".class")
+        jarOutputStream.putNextEntry(zipEntry)
+        jarOutputStream.write(RouterMappingByteCodeBuilder.get(collector.getMappingClassNames()))
+        jarOutputStream.closeEntry()
+        jarOutputStream.close()
+        fos.close()
     }
 }
