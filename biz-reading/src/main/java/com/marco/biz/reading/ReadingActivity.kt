@@ -16,6 +16,7 @@ class ReadingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prdCode = intent.getStringExtra("prdCode") ?: ""
-        findViewById<TextView>(R.id.tvParameter).text = "prdCode->$prdCode"
+        val prdName = intent.getStringExtra("prdName") ?: ""
+        findViewById<TextView>(R.id.tvParameter).text = "prdCode->$prdCode \n prdName->$prdName"
     }
 }

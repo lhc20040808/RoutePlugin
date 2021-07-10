@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Router.init()
         findViewById<TextView>(R.id.tvOpenRead).setOnClickListener {
-            Router.go(it.context, "router://read/reading")
+            Router.go(it.context, "router://read/reading?prdCode=100&prdName=雷雨")
         }
     }
 }
