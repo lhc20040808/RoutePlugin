@@ -117,3 +117,25 @@ APT工作原理
 - 生成文档
 - 注册映射
 - 打开页面
+
+
+
+#### Gradle脚本管理技巧
+
+- 版本号统一管理
+
+- 维护敏感信息
+
+  - 可以将敏感信息，比如账号密码放入local.properties文件中
+
+  - ```groovy
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    def name = properties.getProperty('USER_NAME')
+    def pwd = properties.getProperty('USER_PWD')
+    ```
+
+- 脚本拆分
+
+  - 将功能移入独立的脚本文件，比如放在工程目录下的`read_local_prop.gradle`中
+  - 通过`apply from : project.rootProject.file('read_local_prop.gradle')`使用

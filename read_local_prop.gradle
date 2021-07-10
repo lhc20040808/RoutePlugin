@@ -1,0 +1,4 @@
+Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
+def name = properties.getProperty('USER_NAME')
+def pwd = properties.getProperty('USER_PWD')
