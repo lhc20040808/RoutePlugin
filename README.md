@@ -139,3 +139,13 @@ APT工作原理
 
   - 将功能移入独立的脚本文件，比如放在工程目录下的`read_local_prop.gradle`中
   - 通过`apply from : project.rootProject.file('read_local_prop.gradle')`使用
+
+- 编译期检测依赖的安全性
+
+  - 应用场景
+    - 禁止依赖snapshot版本的库
+    - 禁止团队成员依赖额外图片库
+
+
+
+#### BuildConfig

@@ -1,0 +1,6 @@
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        String dependency = details.requested.toString()
+        //根据依赖名称进行过滤
+    }
+}
