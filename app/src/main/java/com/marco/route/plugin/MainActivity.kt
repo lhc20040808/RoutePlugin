@@ -2,6 +2,7 @@ package com.marco.route.plugin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import com.marco.router.runtime.Router
 import com.router.plugin.annotation.Destination
 
@@ -11,5 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Router.init()
+        findViewById<TextView>(R.id.tvOpenRead).setOnClickListener {
+            Router.go(it.context, "router://read/reading")
+        }
     }
 }
