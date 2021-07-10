@@ -15,6 +15,7 @@ class ReadingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_reading)
         val prdCode = intent.getStringExtra("prdCode") ?: ""
         val prdName = intent.getStringExtra("prdName") ?: ""
         findViewById<TextView>(R.id.tvParameter).text = "prdCode->$prdCode \n prdName->$prdName"
